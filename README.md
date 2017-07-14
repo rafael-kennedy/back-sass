@@ -21,10 +21,20 @@ npm i -D back-sass
 ## Usage
 
 ```javascript
-const backSass = require('back-sass')
+const BackSass = require('back-sass')
 
-backSass.fromString(someString) // outputs css
-backSass.fromFile(someFilePath) // outputs css
+let bscss = BackSass.fromString(someString)
+let bscss = BackSass.fromFile(someFilePath)
+let bscss = new BackSass(someString)
+let bscss = BackSass.fromString(someString, true) // include the original
+                                  // javascript in comments before output.
+
+
+let outCssString = bscss.toCSS() // output css string.
+let cssBuffer = bscss.toCSSBuffer()// output css buffer.
+let outScssString = bscss.toSCSS() // output scss string.
+let outScssString = bscss.toSCSS(['some/file/paths']) // output sass string,
+                                                  // specifying includePaths
 ```
 
 There are two types of interpolation. If your javascript does not contain any backticks (even in comments) you can simply place your javascript between backticks:

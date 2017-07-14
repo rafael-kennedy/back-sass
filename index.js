@@ -50,7 +50,7 @@ function nextMatch (inText, arr) {
   return nextMatch(post, arr)
 }
 
-function transform (inArr) {
+function transform (inArr, includeComments) {
   function parseObj (inObj, depth) {
     if (!depth) {
       depth = 0
@@ -80,6 +80,9 @@ function transform (inArr) {
     if (_obj.type === 'text') {
       __out += _obj.text
     } else if (_obj.type === 'code') {
+      if (includeComments) {
+        __out += "/*"+_obj.text+"*/"
+      }
       _out = eval(_obj.text)
       if (!_out) {
         continue
@@ -96,11 +99,31 @@ function transform (inArr) {
   return __out
 }
 
-module.exports = {
-  fromString (inText) {
-    return sass.renderSync({data: transform(inText), includePaths: fs.readdirSync('.')}).css.toString('utf8')
-  },
-  fromFile (inFilePath) {
-    return this.fromString(fs.readFileSync(inFilePath, 'utf8'))
+class BackSass {
+  constructor (text, includeComments) {
+    this.text = transform(text, includeComments)
+  }
+  static fromString (inText) {
+    return new BackSass(inText)
+  }
+  static fromFile (inFilePath) {
+    return new BackSass(fs.readFileSync(inFilePath, 'utf8'))
+  }
+  toCSS (includePaths) {
+    if (!includePaths) {
+      includePaths = fs.readdirSync(__dirname)
+    }
+    return sass.renderSync({data: transform(this.text), includePaths}).css.toString('utf8')
+  }
+  toSCSS () {
+    return this.text
+  }
+  toCSSBuffer (includePaths) {
+    if (!includePaths) {
+      includePaths = fs.readdirSync(__dirname)
+    }
+    return sass.renderSync({data: transform(this.text), includePaths}).css
   }
 }
+
+module.exports = BackSass
