@@ -1,17 +1,15 @@
 const fs = require('fs')
 const sass = require('node-sass')
 
-
 const reIL = /`([^*][^]+?)`/m
 const reES = /`\*([^]+?)\*`/m
 const reIM = /\s*@import ?(.+\.bscss)\s*$/
 
-function nextMatch(inText, arr) {
-
+function nextMatch (inText, arr) {
   var reArr = [
     {type: 'il', m: inText.match(reIL)},
     {type: 'es', m: inText.match(reES)},
-    {type: 'im', m: inText.match(reIM)},
+    {type: 'im', m: inText.match(reIM)}
   ].filter(obj => obj.m)
 
   if (!reArr.length) {
@@ -22,7 +20,7 @@ function nextMatch(inText, arr) {
     return arr
   }
 
-  var next = reArr.reduce((a, b) => {return a.m.index < b.m.index? a : b})
+  var next = reArr.reduce((a, b) => { return a.m.index < b.m.index ? a : b })
 
   let match = next.m[1]
   let gone = next.m[0]
@@ -39,34 +37,32 @@ function nextMatch(inText, arr) {
         type: 'code',
         text: match
       })
-      break;
+      break
     case 'im':
       arr.push({
         type: 'import',
         text: match
       })
-    break;
+      break
 
   }
 
   return nextMatch(post, arr)
 }
 
-
-
-function transform(inArr) {
-  function parseObj(inObj, depth) {
+function transform (inArr) {
+  function parseObj (inObj, depth) {
     if (!depth) {
       depth = 0
     }
-    var out = ""
+    var out = ''
     Object.entries(inObj).forEach((kv) => {
       let k = kv[0]
       let v = kv[1]
       if (typeof v === 'string') {
-        out += `${new Array(depth+1).join(' ') + k}: ${v};\n`
+        out += `${new Array(depth + 1).join(' ') + k}: ${v};\n`
       } else {
-        out += `${new Array(depth+1).join(' ') + k}: {\n${new Array(depth+2).join(' ') + parseObj(v, depth+1)}${new Array(depth+2).join(' ')}}\n`
+        out += `${new Array(depth + 1).join(' ') + k}: {\n${new Array(depth + 2).join(' ') + parseObj(v, depth + 1)}${new Array(depth + 2).join(' ')}}\n`
       }
     })
     return out
@@ -75,13 +71,13 @@ function transform(inArr) {
   if (!Array.isArray(inArr)) {
     inArr = nextMatch(inArr, [])
   }
-  var __out = ""
-  function add(text) {
+  var __out = ''
+  function add (text) {
     __out += text
   }
   for (var i = 0; i < inArr.length; i++) {
     let _obj = inArr[i]
-    if (_obj.type === 'text'){
+    if (_obj.type === 'text') {
       __out += _obj.text
     } else if (_obj.type === 'code') {
       _out = eval(_obj.text)
@@ -101,7 +97,7 @@ function transform(inArr) {
 }
 
 module.exports = {
-  fromString(inText) {
+  fromString (inText) {
     return sass.renderSync({data: transform(inText), includePaths: fs.readdirSync('.')}).css.toString('utf8')
   },
   fromFile (inFilePath) {

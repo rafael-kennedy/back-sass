@@ -9,12 +9,12 @@
   "author": "Rafael Kennedy",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.0.2"
   },
   "dependencies": {
     "yargs": "^8.0.2"
   },
   "peerDependencies": {
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.5.3"
   }
 }

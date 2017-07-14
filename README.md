@@ -1,6 +1,9 @@
 # Back-SASS
 
-> Warning: This is (very) experimental, and not intended for production. More 
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+
+> Warning: This is (very) experimental, and not intended for production. More
 importantly, NEVER use this package to process untrusted code.
 
 This allows you to embed javascript into scss (currently indented syntax is not supported) between back-ticks. Any javascript between backticks will be evaluated, and its output concatenated into the sass. If the output is a string, it will be concatenated. If it produces no output, nothing will be added to the sass, and if it is an object, it will be formatted as sass before being added to the sass. This allows you to use all of the benefits of sass without relying on the limited sass-script syntax and ecosystem.
