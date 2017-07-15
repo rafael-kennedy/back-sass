@@ -16,5 +16,16 @@
   },
   "peerDependencies": {
     "node-sass": "^4.5.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafael-kennedy/back-sass.git"
+  },
+  "keywords": [
+    "SASS"
+  ],
+  "bugs": {
+    "url": "https://github.com/rafael-kennedy/back-sass/issues"
+  },
+  "homepage": "https://github.com/rafael-kennedy/back-sass#readme"
 }
