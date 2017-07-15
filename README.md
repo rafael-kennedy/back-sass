@@ -32,9 +32,9 @@ let bscss = BackSass.fromString(someString, true) // include the original
 
 let outCssString = bscss.toCSS() // output css string.
 let cssBuffer = bscss.toCSSBuffer()// output css buffer.
+let outScssString = bscss.toCSS(['some/file/paths']) // output css string,
+// specifying includePaths
 let outScssString = bscss.toSCSS() // output scss string.
-let outScssString = bscss.toSCSS(['some/file/paths']) // output sass string,
-                                                  // specifying includePaths
 ```
 
 There are two types of interpolation. If your javascript does not contain any backticks (even in comments) you can simply place your javascript between backticks:
