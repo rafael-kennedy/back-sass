@@ -3,3 +3,10 @@
   box-sizing: border-box;
   `string`: red
 }
+`*
+var function something (param) {
+  return param + 'px'
+}
+*`
+
+.main
